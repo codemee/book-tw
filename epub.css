@@ -1,0 +1,304 @@
+@font-face { font-family: "BookSerif"; font-weight: normal; font-style: normal; src: url("epub-fonts/NotoSerifTC-Regular.ttf"); }
+@font-face { font-family: "BookSerif"; font-weight: bold; font-style: normal; src: url("epub-fonts/NotoSerifTC-Bold.ttf"); }
+@font-face { font-family: "BookMono"; font-weight: normal; font-style: normal; src: url("epub-fonts/MapleMonoNFCN-Regular.ttf"); }
+@font-face { font-family: "BookMono"; font-weight: bold; font-style: normal; src: url("epub-fonts/MapleMonoNFCN-Bold.ttf"); }
+/* epub 專用覆寫：中文字型與程式碼區塊換行 */
+html, body, p, li, h1, h2, h3, h4, h5, h6, blockquote, td, th {
+    font-family: "BookSerif", "Noto Serif TC", "新細明體", "PMingLiU", "Songti TC", serif;
+}
+
+body {
+    line-height: 1.6;
+}
+
+/* 內文段落與清單項目左右對齊；其餘（標題、表格、程式碼、說明框標題）靠左或置中 */
+p, li {
+    text-align: justify;
+}
+
+td, th, pre, code, div.listing-filename, div.listing-caption, div.tablebox-title,
+div.callout-title {
+    text-align: left;
+}
+
+/* 段落間距要明顯大於行距 */
+p {
+    text-indent: 0 !important;
+    margin: 0 0 1.4em 0;
+    line-height: 1.6;
+}
+
+/* 條列項目：縮排一致、項目之間留白、巢狀清單依層級換符號 */
+ul, ol {
+    margin: 0.4em 0 1.4em 0;
+    padding: 0 0 0 1.8em;
+    text-align: left;
+}
+
+ul {
+    list-style-type: disc;
+}
+
+ol {
+    list-style-type: decimal;
+}
+
+ul ul, ol ul {
+    list-style-type: circle;
+}
+
+ul ul ul, ol ul ul, ul ol ul {
+    list-style-type: square;
+}
+
+ol ol, ul ol {
+    list-style-type: lower-alpha;
+}
+
+/* 無序清單改用自繪的項目符號（後處理在 li 前加 span.bullet），比內建圓點大而清楚 */
+ul {
+    padding-left: 0.3em;
+}
+
+li.bl {
+    list-style-type: none;
+    list-style: none;
+    padding-left: 1.5em;
+}
+
+/* 符號用全形的 ●○■（字型內的 • 太小），縮到 0.6 倍；行高放大成 1.6em 讓符號與首行文字垂直置中 */
+span.bullet {
+    float: left;
+    width: 2em;
+    margin-left: -2.2em;
+    font-size: 0.6em;
+    line-height: 2.67;
+    text-indent: 0;
+    text-align: center;
+    color: #3a4a63;
+}
+
+li {
+    margin: 0 0 0.7em 0;
+    padding-left: 0.3em;
+    line-height: 1.6;
+    text-indent: 0;
+}
+
+li p {
+    margin: 0 0 0.5em 0;
+}
+
+li ul, li ol {
+    margin: 0.5em 0 0.3em 0;
+}
+
+/* 標題層級：章名 > 小節 > 子小節，並與內文拉開距離 */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+    text-indent: 0;
+    page-break-after: avoid;
+}
+
+h1, h2 {
+    font-size: 2em;
+    line-height: 1.3;
+    text-align: center;
+    margin: 0.8em 0 1.6em 0;
+    padding-bottom: 0.4em;
+    border-bottom: 2px solid #444444;
+}
+
+h3 {
+    font-size: 1.4em;
+    line-height: 1.4;
+    margin: 2em 0 0.8em 0;
+}
+
+h4 {
+    font-size: 1.15em;
+    line-height: 1.4;
+    margin: 1.6em 0 0.6em 0;
+}
+
+h5, h6 {
+    font-size: 1em;
+    margin: 1.4em 0 0.5em 0;
+}
+
+/* 一般引用／注意事項：左側色條 */
+blockquote {
+    margin: 1.2em 0.5em;
+    padding: 0.2em 1em;
+    border-left: 4px solid #8a9bb0;
+    background: #f4f6f9;
+}
+
+blockquote p {
+    margin: 0.6em 0;
+}
+
+/* 範例程式碼：檔名、程式碼、說明合成一個整體 */
+div.listing {
+    margin: 1.6em 0;
+    border: 1px solid #c3cad6;
+}
+
+div.listing-filename {
+    font-size: 0.9em;
+    font-weight: bold;
+    padding: 0.3em 0.8em;
+    background: #e6eaf1;
+    border-bottom: 1px solid #c3cad6;
+    text-indent: 0;
+}
+
+div.listing pre {
+    margin: 0;
+}
+
+div.listing pre code {
+    margin: 0;
+    padding: 0.6em 0.8em;
+}
+
+div.listing-caption {
+    font-size: 0.9em;
+    font-weight: bold;
+    padding: 0.3em 0.8em;
+    background: #e6eaf1;
+    border-top: 1px solid #c3cad6;
+    text-indent: 0;
+}
+
+/* 表格：格線、欄位標題凸顯；有標題的表格與程式碼區塊同樣加框與標題條 */
+table {
+    border-collapse: collapse;
+    margin: 1.4em 0;
+    width: 100%;
+}
+
+th, td {
+    border: 1px solid #9aa5b5;
+    padding: 0.4em 0.8em;
+    text-align: left;
+    vertical-align: top;
+    text-indent: 0;
+}
+
+th {
+    background: #dde4ee;
+    font-weight: bold;
+}
+
+div.tablebox {
+    margin: 1.6em 0;
+    border: 1px solid #c3cad6;
+}
+
+div.tablebox table {
+    margin: 0;
+}
+
+div.tablebox-title {
+    font-size: 0.9em;
+    font-weight: bold;
+    padding: 0.3em 0.8em;
+    background: #e6eaf1;
+    border-bottom: 1px solid #c3cad6;
+    text-indent: 0;
+}
+
+div.caption-line {
+    font-size: 0.9em;
+    font-weight: bold;
+    text-align: center;
+    text-indent: 0;
+    margin: 0.4em 0 1.2em 0;
+}
+
+/* 有標題的說明框：標題條 + 內容，整個加框 */
+div.callout {
+    margin: 1.6em 0.3em;
+    border: 1.5px solid #6b7a8f;
+}
+
+div.callout-title {
+    font-weight: bold;
+    font-size: 1em;
+    padding: 0.4em 0.9em;
+    background: #dde4ee;
+    border-bottom: 1.5px solid #6b7a8f;
+    text-indent: 0;
+}
+
+div.callout-body {
+    padding: 0.3em 0.9em;
+    background: #fafbfc;
+}
+
+div.callout-body p {
+    margin: 0.6em 0;
+}
+
+pre {
+    margin: 1.2em 0;
+}
+
+/* 連結：改用 border-bottom，避免 text-decoration 底線壓到中文字 */
+a, a:link, a:visited {
+    text-decoration: none;
+    color: #1a5fb4;
+    border-bottom: 1px solid #1a5fb4;
+}
+
+pre {
+    white-space: pre-wrap !important;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    overflow-x: auto;
+    font-family: "BookMono", "Maple Mono NF CN", "Consolas", "Courier New", monospace;
+}
+
+pre code, code {
+    font-family: "BookMono", "Maple Mono NF CN", "Consolas", "Courier New", monospace;
+}
+
+/* 行內程式碼：ADE 不會為行內元素的水平 padding 預留空間，灰底會蓋住前後的標點，
+   所以水平方向改用 margin（會佔位），padding 只留垂直方向 */
+p code, li code, td code, th code, h1 code, h2 code, h3 code, h4 code,
+a code, em code, strong code, blockquote code, div code {
+    padding: 0.1em 0;
+    margin: 0 0.25em;
+}
+
+/* 行內元素之前的全形標點（見 postprocess.py）：補回被縮掉的半個字寬 */
+span.pn {
+    margin-right: 0.5em;
+}
+
+/* 區塊程式碼不受上面行內規則影響 */
+pre code {
+    padding: 0.5em 0.8em;
+    margin: 0;
+}
+
+/* 粗體前後留一點空隙，避免與相鄰的全形標點貼在一起 */
+strong, b {
+    margin: 0 0.06em;
+}
+
+pre code {
+    display: block;
+    white-space: pre-wrap !important;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    font-size: 0.82em;
+}
+
+/* 程式碼（Rust、TOML 等）不折行，縮小字級讓整行放得下；終端輸出仍自動折行 */
+pre code.code-nowrap {
+    white-space: pre !important;
+    word-wrap: normal;
+    overflow-wrap: normal;
+}
