@@ -1,0 +1,175 @@
+@font-face { font-family: "BookSerif"; font-weight: normal; font-style: normal; src: url("epub-fonts/NotoSerifTC-Regular.ttf"); }
+@font-face { font-family: "BookSerif"; font-weight: bold; font-style: normal; src: url("epub-fonts/NotoSerifTC-Bold.ttf"); }
+@font-face { font-family: "BookMono"; font-weight: normal; font-style: normal; src: url("epub-fonts/MapleMonoNFCN-Regular.ttf"); }
+@font-face { font-family: "BookMono"; font-weight: bold; font-style: normal; src: url("epub-fonts/MapleMonoNFCN-Bold.ttf"); }
+/* epub 專用覆寫：中文字型與程式碼區塊換行 */
+html, body, p, li, h1, h2, h3, h4, h5, h6, blockquote, td, th {
+    font-family: "BookSerif", "Noto Serif TC", "新細明體", "PMingLiU", "Songti TC", serif;
+}
+
+body {
+    line-height: 1.6;
+}
+
+/* 段落間距要明顯大於行距 */
+p {
+    text-indent: 0 !important;
+    margin: 0 0 1.4em 0;
+    line-height: 1.6;
+}
+
+li {
+    margin: 0 0 0.6em 0;
+}
+
+li p {
+    margin-bottom: 0.6em;
+}
+
+/* 標題層級：章名 > 小節 > 子小節，並與內文拉開距離 */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+    text-indent: 0;
+    page-break-after: avoid;
+}
+
+h1, h2 {
+    font-size: 2em;
+    line-height: 1.3;
+    text-align: center;
+    margin: 0.8em 0 1.6em 0;
+    padding-bottom: 0.4em;
+    border-bottom: 2px solid #444444;
+}
+
+h3 {
+    font-size: 1.4em;
+    line-height: 1.4;
+    margin: 2em 0 0.8em 0;
+}
+
+h4 {
+    font-size: 1.15em;
+    line-height: 1.4;
+    margin: 1.6em 0 0.6em 0;
+}
+
+h5, h6 {
+    font-size: 1em;
+    margin: 1.4em 0 0.5em 0;
+}
+
+/* 一般引用／注意事項：左側色條 */
+blockquote {
+    margin: 1.2em 0.5em;
+    padding: 0.2em 1em;
+    border-left: 4px solid #8a9bb0;
+    background: #f4f6f9;
+}
+
+blockquote p {
+    margin: 0.6em 0;
+}
+
+/* 範例程式碼：檔名、程式碼、說明合成一個整體 */
+div.listing {
+    margin: 1.6em 0;
+    border: 1px solid #c3cad6;
+}
+
+div.listing-filename {
+    font-size: 0.9em;
+    font-weight: bold;
+    padding: 0.3em 0.8em;
+    background: #e6eaf1;
+    border-bottom: 1px solid #c3cad6;
+    text-indent: 0;
+}
+
+div.listing pre {
+    margin: 0;
+}
+
+div.listing pre code {
+    margin: 0;
+    padding: 0.6em 0.8em;
+}
+
+div.listing-caption {
+    font-size: 0.9em;
+    font-weight: bold;
+    padding: 0.3em 0.8em;
+    background: #e6eaf1;
+    border-top: 1px solid #c3cad6;
+    text-indent: 0;
+}
+
+div.caption-line {
+    font-size: 0.9em;
+    font-weight: bold;
+    text-align: center;
+    text-indent: 0;
+    margin: 0.4em 0 1.2em 0;
+}
+
+/* 有標題的說明框：標題條 + 內容，整個加框 */
+div.callout {
+    margin: 1.6em 0.3em;
+    border: 1.5px solid #6b7a8f;
+}
+
+div.callout-title {
+    font-weight: bold;
+    font-size: 1em;
+    padding: 0.4em 0.9em;
+    background: #dde4ee;
+    border-bottom: 1.5px solid #6b7a8f;
+    text-indent: 0;
+}
+
+div.callout-body {
+    padding: 0.3em 0.9em;
+    background: #fafbfc;
+}
+
+div.callout-body p {
+    margin: 0.6em 0;
+}
+
+pre {
+    margin: 1.2em 0;
+}
+
+/* 連結：改用 border-bottom，避免 text-decoration 底線壓到中文字 */
+a, a:link, a:visited {
+    text-decoration: none;
+    color: #1a5fb4;
+    border-bottom: 1px solid #1a5fb4;
+}
+
+pre {
+    white-space: pre-wrap !important;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    overflow-x: auto;
+    font-family: "BookMono", "Maple Mono NF CN", "Consolas", "Courier New", monospace;
+}
+
+pre code, code {
+    font-family: "BookMono", "Maple Mono NF CN", "Consolas", "Courier New", monospace;
+}
+
+pre code {
+    display: block;
+    white-space: pre-wrap !important;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    font-size: 0.82em;
+}
+
+/* 程式碼（Rust、TOML 等）不折行，縮小字級讓整行放得下；終端輸出仍自動折行 */
+pre code.code-nowrap {
+    white-space: pre !important;
+    word-wrap: normal;
+    overflow-wrap: normal;
+}
