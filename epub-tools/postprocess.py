@@ -27,7 +27,8 @@ formatter = HtmlFormatter(nowrap=True)
 CODE_RE = re.compile(r'<pre><code class="language-([^"]*)">(.*?)</code></pre>', re.S)
 
 
-NOWRAP_LANGS = {"rust", "toml", "powershell", "cmd", "html"}
+TABLE_RE = re.compile(r'<p><span class="caption">(.*?)</span></p>\s*(<table>.*?</table>)', re.S)
+NOWRAP_LANGS ={"rust", "toml", "powershell", "cmd", "html"}
 NOWRAP_RE = re.compile(r'<pre><code class="language-([^"]*)">')
 CALLOUT_RE =re.compile(r"<blockquote>\s*<h([1-6])>(.*?)</h\1>(.*?)</blockquote>", re.S)
 
@@ -139,7 +140,13 @@ with zipfile.ZipFile(src) as zin, zipfile.ZipFile(dst, "w") as zout:
                 text,
             )
             text = LISTING_RE.sub(wrap_listing, text)
-            # 表格、圖片的說明（不屬於程式碼區塊者）改成置中的說明列
+            # 「表格標題 + 表格」合成一個整體，標題條樣式與程式碼區塊相同
+            text = TABLE_RE.sub(
+                lambda m: '<div class="tablebox"><div class="tablebox-title">%s</div>%s</div>'
+                % (m.group(1), m.group(2)),
+                text,
+            )
+            # 圖片的說明（不屬於程式碼區塊、表格者）改成置中的說明列
             text = re.sub(
                 r'<p><span class="caption">(.*?)</span></p>',
                 r'<div class="caption-line">\1</div>',

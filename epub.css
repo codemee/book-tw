@@ -104,6 +104,44 @@ div.listing-caption {
     text-indent: 0;
 }
 
+/* 表格：格線、欄位標題凸顯；有標題的表格與程式碼區塊同樣加框與標題條 */
+table {
+    border-collapse: collapse;
+    margin: 1.4em 0;
+    width: 100%;
+}
+
+th, td {
+    border: 1px solid #9aa5b5;
+    padding: 0.4em 0.8em;
+    text-align: left;
+    vertical-align: top;
+    text-indent: 0;
+}
+
+th {
+    background: #dde4ee;
+    font-weight: bold;
+}
+
+div.tablebox {
+    margin: 1.6em 0;
+    border: 1px solid #c3cad6;
+}
+
+div.tablebox table {
+    margin: 0;
+}
+
+div.tablebox-title {
+    font-size: 0.9em;
+    font-weight: bold;
+    padding: 0.3em 0.8em;
+    background: #e6eaf1;
+    border-bottom: 1px solid #c3cad6;
+    text-indent: 0;
+}
+
 div.caption-line {
     font-size: 0.9em;
     font-weight: bold;
