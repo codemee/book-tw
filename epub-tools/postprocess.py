@@ -27,7 +27,39 @@ formatter = HtmlFormatter(nowrap=True)
 CODE_RE = re.compile(r'<pre><code class="language-([^"]*)">(.*?)</code></pre>', re.S)
 
 
-TABLE_RE = re.compile(r'<p><span class="caption">(.*?)</span></p>\s*(<table>.*?</table>)', re.S)
+# Noto Serif TC 的全形標點置中。ADE 會把「行內元素之前」那個標點的字寬縮成一半，
+# 置中的字形就會和後面的粗體／程式碼重疊；包成 span 並補回半個字寬的 margin。
+PUNCT_BEFORE_INLINE_RE = re.compile(r"([，。、；：！？）」』》〉])(?=<(?:code|strong|em|a|b|i)\b)")
+LIST_TAG_RE =re.compile(r"<(/?)(ul|ol|li)\b[^>]*>")
+BULLETS = ["●", "○", "■"]
+# 整個項目只是一句被引號包住的文字時，引號是多餘的（例如 “Desktop Development with C++”）
+QUOTED_ITEM_RE = re.compile(r'(<span class="bullet">[^<]</span>)[“"]([^“”"<]*)[”"](</li>)')
+EMOJI_RE = re.compile(r"[\U0001F000-\U0001FAFF]\s?")
+
+
+def add_bullets(text):
+    """無序清單的 <li> 前面加上自繪項目符號（閱讀器內建的圓點太小），巢狀層級換符號。"""
+    stack = []
+
+    def repl(m):
+        closing, tag = m.group(1), m.group(2)
+        if tag in ("ul", "ol"):
+            if closing:
+                if stack:
+                    stack.pop()
+            else:
+                stack.append(tag)
+            return m.group(0)
+        if closing or not stack or stack[-1] != "ul":
+            return m.group(0)
+        level = min(stack.count("ul") - 1, len(BULLETS) - 1)
+        return '<li class="bl"><span class="bullet">%s</span>' % BULLETS[level]
+
+    text = LIST_TAG_RE.sub(repl, text)
+    return QUOTED_ITEM_RE.sub(r"\1\2\3", text)
+
+
+TABLE_RE =re.compile(r'<p><span class="caption">(.*?)</span></p>\s*(<table>.*?</table>)', re.S)
 NOWRAP_LANGS ={"rust", "toml", "powershell", "cmd", "html"}
 NOWRAP_RE = re.compile(r'<pre><code class="language-([^"]*)">')
 CALLOUT_RE =re.compile(r"<blockquote>\s*<h([1-6])>(.*?)</h\1>(.*?)</blockquote>", re.S)
@@ -131,6 +163,10 @@ with zipfile.ZipFile(src) as zin, zipfile.ZipFile(dst, "w") as zout:
                 % (m.group(2), m.group(3)),
                 text,
             )
+            # emoji 在多數閱讀器的內嵌字型中沒有字形，會變成空白，直接移除
+            text = EMOJI_RE.sub("", text)
+            text = PUNCT_BEFORE_INLINE_RE.sub(r'<span class="pn">\1</span>', text)
+            text = add_bullets(text)
             text = CODE_RE.sub(color_block, text)
             # 程式碼（非終端輸出）不自動折行，避免折行後與語法混淆
             text = NOWRAP_RE.sub(

@@ -28,11 +28,13 @@ for p in list(book.glob("src/**/*.md")) + list(book.glob("listings/**/*")):
 chars -= set("\r\n\t")
 # 常用全形標點補齊
 chars |= set("，。、；：？！「」『』（）《》〈〉…—～・“”‘’　")
+# 清單項目符號（見 postprocess.py 的 BULLETS）
+chars |= set("●○■")
 print("characters:", len(chars))
 
-def do_subset(font, name):
+def do_subset(font, name, features=("*",)):
     opts = subset.Options()
-    opts.layout_features = ["*"]
+    opts.layout_features = list(features)
     opts.name_IDs = ["*"]
     opts.notdef_outline = True
     opts.glyph_names = False
@@ -48,7 +50,9 @@ vf = noto_vf
 for w, name in [(400, "NotoSerifTC-Regular.ttf"), (700, "NotoSerifTC-Bold.ttf")]:
     f = TTFont(vf)
     f = instancer.instantiateVariableFont(f, {"wght": w})
-    do_subset(f, name)
+    # 內文字型不保留字距／全形標點調整（kern、palt、halt…），避免部分閱讀器在
+    # 字型切換處（如粗體前的全形標點）把標點字寬壓縮而與後面文字重疊
+    do_subset(f, name, features=("locl", "ccmp"))
 
 # Maple Mono NF CN
 mdir = maple_dir

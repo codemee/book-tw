@@ -11,6 +11,16 @@ body {
     line-height: 1.6;
 }
 
+/* 內文段落與清單項目左右對齊；其餘（標題、表格、程式碼、說明框標題）靠左或置中 */
+p, li {
+    text-align: justify;
+}
+
+td, th, pre, code, div.listing-filename, div.listing-caption, div.tablebox-title,
+div.callout-title {
+    text-align: left;
+}
+
 /* 段落間距要明顯大於行距 */
 p {
     text-indent: 0 !important;
@@ -18,12 +28,69 @@ p {
     line-height: 1.6;
 }
 
+/* 條列項目：縮排一致、項目之間留白、巢狀清單依層級換符號 */
+ul, ol {
+    margin: 0.4em 0 1.4em 0;
+    padding: 0 0 0 1.8em;
+    text-align: left;
+}
+
+ul {
+    list-style-type: disc;
+}
+
+ol {
+    list-style-type: decimal;
+}
+
+ul ul, ol ul {
+    list-style-type: circle;
+}
+
+ul ul ul, ol ul ul, ul ol ul {
+    list-style-type: square;
+}
+
+ol ol, ul ol {
+    list-style-type: lower-alpha;
+}
+
+/* 無序清單改用自繪的項目符號（後處理在 li 前加 span.bullet），比內建圓點大而清楚 */
+ul {
+    padding-left: 0.3em;
+}
+
+li.bl {
+    list-style-type: none;
+    list-style: none;
+    padding-left: 1.5em;
+}
+
+/* 符號用全形的 ●○■（字型內的 • 太小），縮到 0.6 倍；行高放大成 1.6em 讓符號與首行文字垂直置中 */
+span.bullet {
+    float: left;
+    width: 2em;
+    margin-left: -2.2em;
+    font-size: 0.6em;
+    line-height: 2.67;
+    text-indent: 0;
+    text-align: center;
+    color: #3a4a63;
+}
+
 li {
-    margin: 0 0 0.6em 0;
+    margin: 0 0 0.7em 0;
+    padding-left: 0.3em;
+    line-height: 1.6;
+    text-indent: 0;
 }
 
 li p {
-    margin-bottom: 0.6em;
+    margin: 0 0 0.5em 0;
+}
+
+li ul, li ol {
+    margin: 0.5em 0 0.3em 0;
 }
 
 /* 標題層級：章名 > 小節 > 子小節，並與內文拉開距離 */
@@ -195,6 +262,30 @@ pre {
 
 pre code, code {
     font-family: "BookMono", "Maple Mono NF CN", "Consolas", "Courier New", monospace;
+}
+
+/* 行內程式碼：ADE 不會為行內元素的水平 padding 預留空間，灰底會蓋住前後的標點，
+   所以水平方向改用 margin（會佔位），padding 只留垂直方向 */
+p code, li code, td code, th code, h1 code, h2 code, h3 code, h4 code,
+a code, em code, strong code, blockquote code, div code {
+    padding: 0.1em 0;
+    margin: 0 0.25em;
+}
+
+/* 行內元素之前的全形標點（見 postprocess.py）：補回被縮掉的半個字寬 */
+span.pn {
+    margin-right: 0.5em;
+}
+
+/* 區塊程式碼不受上面行內規則影響 */
+pre code {
+    padding: 0.5em 0.8em;
+    margin: 0;
+}
+
+/* 粗體前後留一點空隙，避免與相鄰的全形標點貼在一起 */
+strong, b {
+    margin: 0 0.06em;
 }
 
 pre code {
